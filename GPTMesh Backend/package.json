@@ -1,0 +1,21 @@
+{
+  "name": "gptmesh-backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Abidur Rahman",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.1",
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
+    "openai": "^6.33.0"
+  }
+}
