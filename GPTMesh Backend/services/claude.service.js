@@ -4,12 +4,12 @@ const anthropic = new Anthropic({
     apiKey: process.env.CLAUDE_API_KEY,
 });
 
-export async function askClaude(prompt) {
+export async function askClaude(messages) {
     try {
         const msg = await anthropic.messages.create({
             model: 'claude-3-haiku-20240307',
             max_tokens: 1000,
-            message: [{role: 'user', content: prompt}],
+            messages: messages,
         });
 
         return msg.content[0].text;

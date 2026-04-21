@@ -8,19 +8,10 @@ const deepseek = new OpenAI({
     apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
-export async function askDeepSeek(prompt) {
+export async function askDeepSeek(messages) {
     try {
         const response = await deepseek.chat.completions.create({
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful AI assistant.",
-                },
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
+            messages: messages,
             model: "deepseek-chat",
         });
 

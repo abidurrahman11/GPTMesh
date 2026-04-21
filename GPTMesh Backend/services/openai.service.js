@@ -4,18 +4,11 @@ const openAI = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function askOpenAI (prompt) {
+export async function askOpenAI (messages) {
     try {
-        const response = openAI.chat.completions.create({
+        const response = await openAI.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{
-                role: 'system',
-                content: 'You are a helpful AI assistant.'
-            },
-            {
-                role: 'user',
-                content: prompt,
-            }],
+            messages: messages,
             temperature: 0.7,
         });
         return response.choices[0].message.content;

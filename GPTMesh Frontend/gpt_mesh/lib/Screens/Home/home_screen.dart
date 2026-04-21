@@ -81,11 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // add a new message to the chat and scroll to the bottom
-  void _addMessage(String text, bool isUser) {
+  void _addMessage(String text, String role) {
     setState(() {
-      _currentChat?.messages.add(ChatMessage(text: text, isUser: isUser));
+      _currentChat?.messages.add(ChatMessage(text: text, role: role));
       // Auto title update (ONLY first user message)
-      if (_currentChat != null && _currentChat!.messages.length == 1 && isUser) {
+      if (_currentChat != null && _currentChat!.messages.length == 1 && role == "user") {
         _currentChat!.title = text.length > 20 ? text.substring(0, 20) : text;
       }
     });
@@ -111,22 +111,30 @@ class _HomeScreenState extends State<HomeScreen> {
         return "Claude";
       case AIModel.deepseek:
         return "DeepSeek";
+      case AIModel.qwen:
+        return "Qwen";
     }
   }
 
-  // 🤖 Simulate AI (replace with API later)
+  // send user message to the backend and get AI response
   Future<void> _handleUserMessage(String text) async {
-    _addMessage(text, true);
+    _addMessage(text, "user");
     // loading effect
-    _addMessage("Thinking...", false);
+    _addMessage("Thinking...", "assistant");
 
     try {
+      // send the previous messages as context to AI. limited to 25 messages
+      final messages = _currentChat!.messages.where((msg) => msg.text != "Thinking...").take(25).map((msg) => {
+        "role": msg.role,
+        "content": msg.text,
+      }).toList();
+      // send request to AI
       final response = await http.post(
         // Uri.parse("http://192.168.0.102:3000/api/ai/ask"),
         Uri.parse("http://localhost:3000/api/ai/ask"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "prompt": text,
+          "messages": messages,
           "model": getModelName(_selectedModel).toLowerCase(),
         }),
       );
@@ -135,12 +143,12 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _currentChat!.messages.removeLast(); // remove "Thinking..."
       });
-      _addMessage("${getModelName(_selectedModel)}:\n${data['text']}", false);
+      _addMessage("${getModelName(_selectedModel)}:\n${data['text']}", "assistant");
     } catch (error) {
       setState(() {
         _currentChat!.messages.removeLast();
       });
-      _addMessage("Error: $error", false);
+      _addMessage("Error: $error", "assistant");
     }
   }
 
@@ -186,7 +194,12 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _currentChat?.messages.length ?? 0,
               itemBuilder: (context, index) {
                 final msg = _currentChat!.messages[index];
-                return ChatBubble(text: msg.text, isUser: msg.isUser);
+                // return a chat bubble based on the message role
+                if (msg.role == "user") {
+                  return ChatBubble(text: msg.text, isUser: true);
+                } else {
+                  return ChatBubble(text: msg.text, isUser: false);
+                }
               },
             ),
           ),

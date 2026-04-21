@@ -5,6 +5,7 @@ enum AIModel {
   gemini,
   claude,
   deepseek,
+  qwen,
 }
 
 class ModelSelector extends StatelessWidget {
@@ -38,6 +39,10 @@ class ModelSelector extends StatelessWidget {
         DropdownMenuItem(
           value: AIModel.deepseek,
           child: Text("DeepSeek"),
+        ),
+        DropdownMenuItem(
+          value: AIModel.qwen,
+          child: Text("Qwen"),
         ),
       ],
       onChanged: (value) {

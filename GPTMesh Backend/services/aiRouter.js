@@ -1,12 +1,13 @@
-import {askDeepSeek} from "../services/deepseek.service.js";
-import {askOpenAI} from "../services/openai.service.js";
-import {askClaude} from "../services/claude.service.js";
-import {askGemini} from "../services/gemini.service.js";
+import {askDeepSeek} from "./deepseek.service.js";
+import {askOpenAI} from "./openai.service.js";
+import {askClaude} from "./claude.service.js";
+import {askGemini} from "./gemini.service.js";
+import {askQwen} from "./qwen.service.js";
 
 export async function handleAIRequest(req, res) {
     try {
-        const {model, prompt} = req.body;
-        if (!model || !prompt) {
+        const {messages, model} = req.body;
+        if (!model || !messages) {
             return res.status(400).json({
                 success: false,
                 message: 'Model and prompt are required',
@@ -17,19 +18,23 @@ export async function handleAIRequest(req, res) {
         // handle different AI models
         switch (model) {
             case "openai":
-                response = await askOpenAI(model);
+                response = await askOpenAI(messages);
                 break;
 
             case "gemini":
-                response = await askGemini(prompt);
+                response = await askGemini(messages);
                 break;
 
             case "claude":
-                response = await askClaude(prompt);
+                response = await askClaude(messages);
                 break;
 
             case "deepseek":
-                response = await askDeepSeek(prompt);
+                response = await askDeepSeek(messages);
+                break;
+
+            case "qwen":
+                response = await askQwen(messages);
                 break;
 
             default:
