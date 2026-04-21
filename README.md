@@ -8,11 +8,11 @@
 
 **GPTMesh** is a powerful AI assistant platform that combines:
 
-* 🎤 Voice input (speech-to-text)
-* 🔊 AI voice responses (text-to-speech)
-* 💬 Multi-chat conversation system
-* 🧠 Context-aware AI memory
-* 🤖 Multi-model support (OpenAI, Gemini, Claude, DeepSeek, Qwen)
+* Voice input (speech-to-text)
+* AI voice responses (text-to-speech)
+* Multi-chat conversation system
+* Context-aware AI memory
+* Multi-model support (OpenAI, Gemini, Claude, DeepSeek, Qwen)
 
 Built with a **Flutter frontend** and a **Node.js backend**, GPTMesh delivers a smooth, scalable, and extensible architecture for real-world AI applications.
 
@@ -112,11 +112,10 @@ GPTMesh/
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-<!-- Replace the image links below with your actual screenshots -->
 
-### 🖥️ App Preview
+### App Preview
 
 | Chat Context     | Chat Switching     |
 | ----------------- | ----------------- |
