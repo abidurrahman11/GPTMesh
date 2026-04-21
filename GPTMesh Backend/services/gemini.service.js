@@ -9,7 +9,7 @@ export async function askGemini(messages) {
             input: messages,
         });
 
-        return response.text;
+        return response.outputs[1].text;
     } catch (error) {
         console.error("❌ Gemini Error:", error);
         throw new Error("Gemini failed");

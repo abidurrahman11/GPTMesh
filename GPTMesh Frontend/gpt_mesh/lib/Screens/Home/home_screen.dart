@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       // send the previous messages as context to AI. limited to 25 messages
       final messages = _currentChat!.messages.where((msg) => msg.text != "Thinking...").take(25).map((msg) => {
-        "role": msg.role,
+        "role": (_selectedModel == AIModel.gemini && msg.role == "assistant") ? "model" : msg.role,
         "content": msg.text,
       }).toList();
       // send request to AI
